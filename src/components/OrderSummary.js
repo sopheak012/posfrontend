@@ -6,10 +6,10 @@ const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
   const drinks = useSelector((state) => state.drink);
 
-  const handleSubmitOrder = async (pizzas, drinks) => {
+  const handleSubmitOrder = async (pizzas, drinks, selectedToppings) => {
     const orderData = {
       pizzas: pizzas.map((pizza) => ({
-        toppings: pizza.toppings.map((topping) => topping.name),
+        toppings: selectedToppings,
         price: pizza.price,
       })),
       drinks: drinks.map((drink) => ({
@@ -63,7 +63,9 @@ const OrderSummary = () => {
           "No drinks in the order"
         )}
       </p>
-      <button onClick={() => handleSubmitOrder(pizzas, drinks)}>
+      <button
+        onClick={() => handleSubmitOrder(pizzas, drinks, pizzas[0]?.toppings)}
+      >
         Submit Order
       </button>
     </div>

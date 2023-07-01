@@ -19,7 +19,7 @@ const CreatePizza = () => {
     return Math.random().toString(36).substr(2, 9);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (selectedToppings) => {
     if (selectedToppings.length === 0) {
       // Don't add the pizza if no toppings are selected
       return;
@@ -60,7 +60,9 @@ const CreatePizza = () => {
       </div>
       <div>
         <p>Selected Toppings: {selectedToppings.join(", ")}</p>
-        <button onClick={handleSubmit}>Add to Order</button>
+        <button onClick={() => handleSubmit(selectedToppings)}>
+          Add to Order
+        </button>
       </div>
     </div>
   );
