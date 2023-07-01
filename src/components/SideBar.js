@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaTh, FaBars, FaUserAlt, FaRegChartBar } from "react-icons/fa";
+import { FaTh, FaBars, FaUserAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ children }) => {

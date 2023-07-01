@@ -1,23 +1,37 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPizza } from "../features/pizzaSlice";
 
 const CreatePizza = () => {
-  const [selectedToppings, setSelectedToppings] = useState(new Set());
+  const [selectedToppings, setSelectedToppings] = useState([]);
+  const dispatch = useDispatch();
 
   const handleToppingSelection = (topping) => {
-    if (selectedToppings.has(topping)) {
-      // If the topping is already selected, remove it
-      selectedToppings.delete(topping);
+    if (selectedToppings.includes(topping)) {
+      setSelectedToppings(selectedToppings.filter((t) => t !== topping));
     } else {
-      // If the topping is not selected, add it
-      selectedToppings.add(topping);
+      setSelectedToppings([...selectedToppings, topping]);
     }
-    setSelectedToppings(new Set(selectedToppings)); // Trigger state update
+  };
+
+  const generateId = () => {
+    // Generate a unique ID for the pizza
+    return Math.random().toString(36).substr(2, 9);
   };
 
   const handleSubmit = () => {
-    // Handle submission logic (e.g., add pizza with selected toppings to order)
-    console.log("Pizza with toppings:", Array.from(selectedToppings));
-    setSelectedToppings(new Set()); // Reset selected toppings
+    if (selectedToppings.length === 0) {
+      // Don't add the pizza if no toppings are selected
+      return;
+    }
+
+    const pizza = {
+      id: generateId(),
+      toppings: selectedToppings,
+    };
+
+    dispatch(addPizza(pizza));
+    setSelectedToppings([]);
   };
 
   return (
@@ -26,26 +40,26 @@ const CreatePizza = () => {
       <div>
         <button
           onClick={() => handleToppingSelection("Pepperoni")}
-          className={selectedToppings.has("Pepperoni") ? "active" : ""}
+          className={selectedToppings.includes("Pepperoni") ? "active" : ""}
         >
           Pepperoni
         </button>
         <button
           onClick={() => handleToppingSelection("Sausage")}
-          className={selectedToppings.has("Sausage") ? "active" : ""}
+          className={selectedToppings.includes("Sausage") ? "active" : ""}
         >
           Sausage
         </button>
         <button
           onClick={() => handleToppingSelection("Pineapple")}
-          className={selectedToppings.has("Pineapple") ? "active" : ""}
+          className={selectedToppings.includes("Pineapple") ? "active" : ""}
         >
           Pineapple
         </button>
         {/* Add more buttons for other toppings */}
       </div>
       <div>
-        <p>Selected Toppings: {Array.from(selectedToppings).join(", ")}</p>
+        <p>Selected Toppings: {selectedToppings.join(", ")}</p>
         <button onClick={handleSubmit}>Add to Order</button>
       </div>
     </div>
