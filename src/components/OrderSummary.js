@@ -8,16 +8,16 @@ import { resetDrinks } from "../features/drinkSlice"; // Import the resetDrinks 
 const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
   const drinks = useSelector((state) => state.drink);
-  const dispatch = useDispatch(); // Create a dispatch function
+  const dispatch = useDispatch();
 
-  const [submitted, setSubmitted] = useState(false); // State to track if the order has been submitted
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmitOrder = async (pizza, selectedToppings) => {
+  const handleSubmitOrder = async () => {
     const orderData = {
-      pizza: {
-        toppings: selectedToppings,
+      pizzas: pizzas.map((pizza) => ({
+        toppings: pizza.toppings,
         price: pizza.price,
-      },
+      })),
       drinks: drinks.map((drink) => ({
         drink: drink.name,
         price: drink.price,
@@ -31,10 +31,8 @@ const OrderSummary = () => {
       );
       console.log("Order submitted successfully:", response.data);
 
-      // Emit a socket.io event to the server with the specific order data
       socket.emit("orderSubmitted", response.data);
 
-      // Reset the fields after successful order submission
       setSubmitted(true);
     } catch (error) {
       console.error("Error submitting order:", error);
@@ -43,14 +41,12 @@ const OrderSummary = () => {
   };
 
   const handleResetOrder = () => {
-    // Reset the selected pizzas and drinks
     setSubmitted(false);
-    dispatch(resetPizzas()); // Dispatch the resetPizzas action to clear the pizza slice state
-    dispatch(resetDrinks()); // Dispatch the resetDrinks action to clear the drink slice state
+    dispatch(resetPizzas());
+    dispatch(resetDrinks());
   };
 
   if (submitted) {
-    // Render a message or component indicating that the order has been submitted
     return (
       <div>
         <h2>Order Submitted</h2>
@@ -63,8 +59,8 @@ const OrderSummary = () => {
   return (
     <div>
       <h2>Order Summary</h2>
-      <p>
-        Selected Pizzas:
+      <div>
+        <p>Selected Pizzas:</p>
         {pizzas.length > 0 ? (
           <ul>
             {pizzas.map((pizza) => (
@@ -75,11 +71,11 @@ const OrderSummary = () => {
             ))}
           </ul>
         ) : (
-          "No pizzas in the order"
+          <p>No pizzas in the order</p>
         )}
-      </p>
-      <p>
-        Selected Drinks:
+      </div>
+      <div>
+        <p>Selected Drinks:</p>
         {drinks.length > 0 ? (
           <ul>
             {drinks.map((drink) => (
@@ -89,18 +85,10 @@ const OrderSummary = () => {
             ))}
           </ul>
         ) : (
-          "No drinks in the order"
+          <p>No drinks in the order</p>
         )}
-      </p>
-      <button
-        onClick={() =>
-          handleSubmitOrder(
-            pizzas[pizzas.length - 1],
-            pizzas[pizzas.length - 1]?.toppings
-          )
-        }
-        disabled={pizzas.length === 0}
-      >
+      </div>
+      <button onClick={handleSubmitOrder} disabled={pizzas.length === 0}>
         Submit Order
       </button>
     </div>

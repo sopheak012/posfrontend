@@ -62,20 +62,44 @@ const Dashboard = () => {
               <div>Order ID: {order.orderNum}</div>
               <div>Pizzas:</div>
               <ul>
-                {order.pizzas.map((pizza) => (
-                  <li key={pizza._id}>
-                    Toppings: {pizza.toppings.join(", ")}, Price: $
-                    {pizza.price.$numberDecimal}
-                  </li>
-                ))}
+                {order.pizzas
+                  .reduce((acc, pizza) => {
+                    const toppings = JSON.stringify(pizza.toppings);
+                    const existingPizzaIndex = acc.findIndex(
+                      (item) => JSON.stringify(item.toppings) === toppings
+                    );
+                    if (existingPizzaIndex !== -1) {
+                      acc[existingPizzaIndex].quantity++;
+                    } else {
+                      acc.push({ toppings: pizza.toppings, quantity: 1 });
+                    }
+                    return acc;
+                  }, [])
+                  .map((pizza) => (
+                    <li key={JSON.stringify(pizza.toppings)}>
+                      {pizza.quantity}x {pizza.toppings.join(", ")}
+                    </li>
+                  ))}
               </ul>
               <div>Drinks:</div>
               <ul>
-                {order.drinks.map((drink) => (
-                  <li key={drink._id}>
-                    Drink: {drink.drink}, Price: ${drink.price.$numberDecimal}
-                  </li>
-                ))}
+                {order.drinks
+                  .reduce((acc, drink) => {
+                    const existingDrinkIndex = acc.findIndex(
+                      (item) => item.drink === drink.drink
+                    );
+                    if (existingDrinkIndex !== -1) {
+                      acc[existingDrinkIndex].quantity++;
+                    } else {
+                      acc.push({ drink: drink.drink, quantity: 1 });
+                    }
+                    return acc;
+                  }, [])
+                  .map((drink) => (
+                    <li key={drink.drink}>
+                      {drink.quantity}x {drink.drink}
+                    </li>
+                  ))}
               </ul>
             </li>
           ))}

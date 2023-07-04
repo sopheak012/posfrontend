@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addPizza } from "../features/pizzaSlice";
+import "../css/CreatePizza.css";
 
 const CreatePizza = () => {
   const [selectedToppings, setSelectedToppings] = useState([]);
