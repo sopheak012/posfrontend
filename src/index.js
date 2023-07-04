@@ -1,15 +1,18 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+import { SocketConnection } from "./socket/SocketConnection";
 import "./index.css";
 import App from "./App";
-import { store } from "./app/store";
-import { Provider } from "react-redux";
 
-ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
+const rootElement = document.getElementById("root");
+
+ReactDOM.createRoot(rootElement).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <SocketConnection />
       <App />
-    </React.StrictMode>
-  </Provider>,
-  document.getElementById("root")
+    </Provider>
+  </React.StrictMode>
 );

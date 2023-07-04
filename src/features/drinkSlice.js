@@ -26,8 +26,12 @@ const drinkSlice = createSlice({
         state.splice(drinkIndex, 1);
       }
     },
+    resetDrinks: (state) => {
+      return [];
+    },
   },
 });
 
-export const { addDrink, editDrink, deleteDrink } = drinkSlice.actions;
+export const { addDrink, editDrink, deleteDrink, resetDrinks } =
+  drinkSlice.actions;
 export default drinkSlice.reducer;
