@@ -3,6 +3,11 @@
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
+  color: #fff;
+}
+
+body {
+  background-color: #393c49;
 }
 
 .container {
@@ -15,7 +20,7 @@ main {
 }
 
 .sidebar {
-  background: #000;
+  background: #1f1d2b;
   color: #fff;
   height: 100vh;
   width: 200px;
@@ -40,20 +45,15 @@ main {
 
 .link {
   display: flex;
-  color: #fff;
   padding: 10px 15px;
   gap: 15px;
   transition: all 0.5s;
 }
 
-.link:hover {
-  background: lightskyblue;
-  color: #000;
-}
-
+.link:hover,
 .active {
-  background: lightskyblue;
-  color: #000;
+  background: #ea7c69;
+  color: #fff;
 }
 
 .icon,

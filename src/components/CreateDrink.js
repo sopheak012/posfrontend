@@ -1,51 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { addDrink } from "../features/drinkSlice";
-import "../css/CreatePizza.css";
 
 const CreateDrink = () => {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
 
-  const handleAddDrink = () => {
-    if (name.trim() !== "") {
-      const newDrink = {
-        id: Math.random().toString(),
-        name: name.trim(),
-        price: 1.25,
-      };
-      dispatch(addDrink(newDrink));
-      setName("");
-    }
+  const handleAddDrink = (name) => {
+    const newDrink = {
+      id: Math.random().toString(),
+      name: name,
+      price: 1.25,
+    };
+    dispatch(addDrink(newDrink));
   };
 
   return (
     <div>
       <h2>Create Drink</h2>
-      <input
-        type="text"
-        placeholder="Enter drink name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button onClick={handleAddDrink}>Add Drink</button>
 
       <h3>Popular Canned Drinks</h3>
       <ul>
         <li>
-          <button onClick={() => setName("Coca-Cola")}>Coca-Cola</button>
+          <button onClick={() => handleAddDrink("Coca-Cola")}>Coca-Cola</button>
         </li>
         <li>
-          <button onClick={() => setName("Pepsi")}>Pepsi</button>
+          <button onClick={() => handleAddDrink("Pepsi")}>Pepsi</button>
         </li>
         <li>
-          <button onClick={() => setName("Sprite")}>Sprite</button>
+          <button onClick={() => handleAddDrink("Sprite")}>Sprite</button>
         </li>
         <li>
-          <button onClick={() => setName("Dr. Pepper")}>Dr. Pepper</button>
+          <button onClick={() => handleAddDrink("Dr. Pepper")}>
+            Dr. Pepper
+          </button>
         </li>
         <li>
-          <button onClick={() => setName("Mountain Dew")}>Mountain Dew</button>
+          <button onClick={() => handleAddDrink("Mountain Dew")}>
+            Mountain Dew
+          </button>
         </li>
       </ul>
     </div>

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { socket } from "../socket/SocketConnection";
-import { resetPizzas } from "../features/pizzaSlice"; // Import the resetPizzas action
-import { resetDrinks } from "../features/drinkSlice"; // Import the resetDrinks action
+import { resetPizzas, removePizza } from "../features/pizzaSlice";
+import { resetDrinks, deleteDrink } from "../features/drinkSlice";
 
 const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
@@ -46,6 +46,14 @@ const OrderSummary = () => {
     dispatch(resetDrinks());
   };
 
+  const handleRemovePizza = (id) => {
+    dispatch(removePizza(id));
+  };
+
+  const handleRemoveDrink = (id) => {
+    dispatch(deleteDrink(id));
+  };
+
   if (submitted) {
     return (
       <div>
@@ -67,6 +75,9 @@ const OrderSummary = () => {
               <li key={pizza.id}>
                 Toppings: {pizza.toppings.join(", ")}, Price:{" "}
                 {pizza.price ? `$${pizza.price.toFixed(2)}` : "N/A"}
+                <button onClick={() => handleRemovePizza(pizza.id)}>
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
@@ -81,6 +92,9 @@ const OrderSummary = () => {
             {drinks.map((drink) => (
               <li key={drink.id}>
                 Drink: {drink.name}, Price: ${drink.price.toFixed(2)}
+                <button onClick={() => handleRemoveDrink(drink.id)}>
+                  Delete
+                </button>
               </li>
             ))}
           </ul>

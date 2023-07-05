@@ -26,7 +26,7 @@ const drinkSlice = createSlice({
         state.splice(drinkIndex, 1);
       }
     },
-    resetDrinks: (state) => {
+    resetDrinks: () => {
       return [];
     },
   },

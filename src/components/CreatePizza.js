@@ -61,7 +61,10 @@ const CreatePizza = () => {
       </div>
       <div>
         <p>Selected Toppings: {selectedToppings.join(", ")}</p>
-        <button onClick={() => handleSubmit(selectedToppings)}>
+        <button
+          onClick={() => handleSubmit(selectedToppings)}
+          className="primary-button"
+        >
           Add to Order
         </button>
       </div>
