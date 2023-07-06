@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addPizza } from "../features/pizzaSlice";
-import "../css/CreatePizza.css";
 
 const CreatePizza = () => {
   const [selectedToppings, setSelectedToppings] = useState([]);
@@ -36,9 +35,9 @@ const CreatePizza = () => {
   };
 
   return (
-    <div>
+    <div className="create-pizza-container">
       <h2>Create Pizza</h2>
-      <div>
+      <div className="toppings-container">
         <button
           onClick={() => handleToppingSelection("Pepperoni")}
           className={selectedToppings.includes("Pepperoni") ? "active" : ""}
@@ -59,7 +58,7 @@ const CreatePizza = () => {
         </button>
         {/* Add more buttons for other toppings */}
       </div>
-      <div>
+      <div className="selected-toppings-container">
         <p>Selected Toppings: {selectedToppings.join(", ")}</p>
         <button
           onClick={() => handleSubmit(selectedToppings)}

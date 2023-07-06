@@ -2,7 +2,6 @@ import React from "react";
 import CreatePizza from "../components/CreatePizza";
 import CreateDrink from "../components/CreateDrink";
 import OrderSummary from "../components/OrderSummary";
-import "../css/OrderPage.css"; // Import the CSS file for styling
 
 const Order = () => {
   return (

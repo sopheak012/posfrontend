@@ -4,7 +4,6 @@ import axios from "axios";
 import { socket } from "../socket/SocketConnection";
 import { resetPizzas, removePizza } from "../features/pizzaSlice";
 import { resetDrinks, deleteDrink } from "../features/drinkSlice";
-import "../css/OrderSummary.css";
 
 const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
