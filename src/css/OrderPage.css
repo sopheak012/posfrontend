@@ -1,0 +1,27 @@
+.order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-content {
+  display: flex;
+  justify-content: space-between;
+  width: 800px; /* Adjust the width as needed */
+}
+
+.create-pizza {
+  width: 300px; /* Adjust the width as needed */
+}
+
+.create-drink {
+  width: 300px; /* Adjust the width as needed */
+}
+
+.order-summary {
+  background-color: #1f1d2b;
+  width: 300px; /* Adjust the width as needed */
+  padding: 20px; /* Add padding to provide spacing */
+  color: #ffffff; /* Set the text color to white */
+  overflow: auto; /* Add scroll when content overflows */
+}

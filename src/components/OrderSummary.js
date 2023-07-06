@@ -4,6 +4,7 @@ import axios from "axios";
 import { socket } from "../socket/SocketConnection";
 import { resetPizzas, removePizza } from "../features/pizzaSlice";
 import { resetDrinks, deleteDrink } from "../features/drinkSlice";
+import "../css/OrderSummary.css";
 
 const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
@@ -32,6 +33,10 @@ const OrderSummary = () => {
       console.log("Order submitted successfully:", response.data);
 
       socket.emit("orderSubmitted", response.data);
+
+      // Reset the Redux state
+      dispatch(resetPizzas());
+      dispatch(resetDrinks());
 
       setSubmitted(true);
     } catch (error) {
@@ -65,42 +70,44 @@ const OrderSummary = () => {
   }
 
   return (
-    <div>
+    <div className="order-summary-container">
       <h2>Order Summary</h2>
-      <div>
-        <p>Selected Pizzas:</p>
-        {pizzas.length > 0 ? (
-          <ul>
-            {pizzas.map((pizza) => (
-              <li key={pizza.id}>
-                Toppings: {pizza.toppings.join(", ")}, Price:{" "}
-                {pizza.price ? `$${pizza.price.toFixed(2)}` : "N/A"}
-                <button onClick={() => handleRemovePizza(pizza.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No pizzas in the order</p>
-        )}
-      </div>
-      <div>
-        <p>Selected Drinks:</p>
-        {drinks.length > 0 ? (
-          <ul>
-            {drinks.map((drink) => (
-              <li key={drink.id}>
-                Drink: {drink.name}, Price: ${drink.price.toFixed(2)}
-                <button onClick={() => handleRemoveDrink(drink.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No drinks in the order</p>
-        )}
+      <div className="order-summary-content">
+        <div className="selected-pizzas">
+          <p>Selected Pizzas:</p>
+          {pizzas.length > 0 ? (
+            <ul>
+              {pizzas.map((pizza) => (
+                <li key={pizza.id}>
+                  Toppings: {pizza.toppings.join(", ")}, Price:{" "}
+                  {pizza.price ? `$${pizza.price.toFixed(2)}` : "N/A"}
+                  <button onClick={() => handleRemovePizza(pizza.id)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No pizzas in the order</p>
+          )}
+        </div>
+        <div className="selected-drinks">
+          <p>Selected Drinks:</p>
+          {drinks.length > 0 ? (
+            <ul>
+              {drinks.map((drink) => (
+                <li key={drink.id}>
+                  Drink: {drink.name}, Price: ${drink.price.toFixed(2)}
+                  <button onClick={() => handleRemoveDrink(drink.id)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No drinks in the order</p>
+          )}
+        </div>
       </div>
       <button onClick={handleSubmitOrder} disabled={pizzas.length === 0}>
         Submit Order

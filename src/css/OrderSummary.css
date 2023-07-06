@@ -1,0 +1,14 @@
+.order-summary-container {
+  height: 400px;
+  overflow: auto;
+}
+
+.order-summary-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-pizzas,
+.selected-drinks {
+  margin-bottom: 20px;
+}
