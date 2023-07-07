@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { signup } from "../features/userSlice";
+import axios from "axios";
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -103,16 +106,94 @@ const SignupMessage = styled.div`
   }
 `;
 
+const Error = styled.p`
+  color: red;
+  margin-bottom: 1em;
+`;
+
 const Signup = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setError(""); // Clear any previous errors
+
+      // Make the API request
+      const response = await axios.post(
+        "http://localhost:4000/api/users/signup",
+        {
+          username,
+          email,
+          password,
+        }
+      );
+
+      const {
+        username: responseUsername,
+        email: responseEmail,
+        token,
+      } = response.data;
+
+      // Dispatch the signup action
+      dispatch(
+        signup({ username: responseUsername, email: responseEmail, token })
+      );
+
+      // Clear the form fields
+      setUsername("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      setError(error.response.data.error);
+      console.error(error);
+    }
+  };
+
   return (
     <CenteredContainer>
       <SignupFormContainer>
         <h1>Create Account</h1>
         <FormContent>
-          <Input type="text" placeholder="Name" />
-          <Input type="email" placeholder="Email" />
-          <Input type="password" placeholder="Password" />
-          <Button>Sign Up</Button>
+          {error && <Error>{error}</Error>}
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Button type="submit" onClick={handleSubmit}>
+            Sign Up
+          </Button>
         </FormContent>
         <SignupMessage>
           <a href="#">Forgot your password?</a>

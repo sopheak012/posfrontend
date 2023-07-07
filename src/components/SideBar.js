@@ -93,7 +93,7 @@ const Sidebar = ({ children }) => {
           </Bars>
         </TopSection>
         {menuItem.map((item, index) => (
-          <Link to={item.path} key={index} activeClassName="active">
+          <Link to={item.path} key={index} activeclassname="active">
             <Icon>{item.icon}</Icon>
             <LinkText isOpen={isOpen}>{item.name}</LinkText>
           </Link>

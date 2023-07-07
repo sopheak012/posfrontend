@@ -10,3 +10,9 @@ export const store = configureStore({
     user: userReducer,
   },
 });
+
+// Subscribe to user reducer changes
+store.subscribe(() => {
+  const userState = store.getState().user;
+  console.log("Updated user state:", userState);
+});

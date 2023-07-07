@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { login } from "../features/userSlice";
+import axios from "axios";
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -28,10 +31,6 @@ const LoginFormContainer = styled.div`
     line-height: 1.5em;
     margin-bottom: 1.2em;
     margin-top: 0.2em;
-  }
-
-  @media (min-width: 768px) {
-    width: 70%;
   }
 `;
 
@@ -104,24 +103,71 @@ const SignupMessage = styled.div`
 `;
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setError(""); // Clear any previous errors
+
+      // Make the API request
+      const response = await axios.post(
+        "http://localhost:4000/api/users/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      const { username, email: responseEmail, token } = response.data;
+
+      // Dispatch the login action
+      dispatch(login({ username, email: responseEmail, token }));
+
+      // Clear the form fields
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      setError(error.response.data.error);
+      console.error(error);
+    }
+  };
+
   return (
     <CenteredContainer>
       <LoginFormContainer>
         <h1>Sign in</h1>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <FormContent>
           <Input
-            type="text"
-            id="user-name"
-            name="user-name"
-            placeholder="User name"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleEmailChange}
           />
           <Input
             type="password"
-            id="password"
             name="password"
             placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
           />
-          <Button>Log in</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Log in
+          </Button>
         </FormContent>
         <SignupMessage>
           <a href="#">Forgot your password?</a>
