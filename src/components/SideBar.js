@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaTh, FaBars, FaUserAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -60,27 +61,34 @@ const LinkText = styled.div`
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const loggedIn = useSelector((state) => state.user.isLogin);
+
   const menuItem = [
     {
       path: "/",
-      name: "Dashboard",
+      name: "Welcome",
       icon: <FaTh />,
     },
-    {
-      path: "/order",
-      name: "Order",
-      icon: <FaUserAlt />,
-    },
-    {
-      path: "/login",
-      name: "Login",
-      icon: <FaUserAlt />,
-    },
-    {
-      path: "/signup",
-      name: "Signup",
-      icon: <FaUserAlt />,
-    },
+    ...(loggedIn
+      ? [
+          {
+            path: "/order",
+            name: "Order",
+            icon: <FaUserAlt />,
+          },
+        ]
+      : [
+          {
+            path: "/login",
+            name: "Login",
+            icon: <FaUserAlt />,
+          },
+          {
+            path: "/signup",
+            name: "Signup",
+            icon: <FaUserAlt />,
+          },
+        ]),
   ];
 
   return (
@@ -93,7 +101,7 @@ const Sidebar = ({ children }) => {
           </Bars>
         </TopSection>
         {menuItem.map((item, index) => (
-          <Link to={item.path} key={index} activeclassname="active">
+          <Link to={item.path} key={index} activeClassName="active">
             <Icon>{item.icon}</Icon>
             <LinkText isOpen={isOpen}>{item.name}</LinkText>
           </Link>
