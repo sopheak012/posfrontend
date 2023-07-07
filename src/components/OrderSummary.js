@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { socket } from "../socket/SocketConnection";
 import { resetPizzas, removePizza } from "../features/pizzaSlice";
 import { resetDrinks, deleteDrink } from "../features/drinkSlice";
+import styles from "../css/OrderSummary.module.css";
 
 const OrderSummary = () => {
   const pizzas = useSelector((state) => state.pizza.pizzas);
@@ -11,6 +13,11 @@ const OrderSummary = () => {
   const dispatch = useDispatch();
 
   const [submitted, setSubmitted] = useState(false);
+  const [subtotal, setSubtotal] = useState(0);
+
+  useEffect(() => {
+    updateSubtotal();
+  }, [pizzas, drinks]);
 
   const handleSubmitOrder = async () => {
     const orderData = {
@@ -52,15 +59,24 @@ const OrderSummary = () => {
 
   const handleRemovePizza = (id) => {
     dispatch(removePizza(id));
+    updateSubtotal();
   };
 
   const handleRemoveDrink = (id) => {
     dispatch(deleteDrink(id));
+    updateSubtotal();
+  };
+
+  const updateSubtotal = () => {
+    const newSubtotal =
+      pizzas.reduce((acc, pizza) => acc + (pizza.price || 0), 0) +
+      drinks.reduce((acc, drink) => acc + (drink.price || 0), 0);
+    setSubtotal(newSubtotal);
   };
 
   if (submitted) {
     return (
-      <div>
+      <div className={styles.orderSubmitted}>
         <h2>Order Submitted</h2>
         <p>Thank you for your order!</p>
         <button onClick={handleResetOrder}>Place Another Order</button>
@@ -69,37 +85,55 @@ const OrderSummary = () => {
   }
 
   return (
-    <div className="order-summary-container">
+    <div className={styles.orderSummaryContainer}>
       <h2>Order Summary</h2>
-      <div className="order-summary-content">
-        <div className="selected-pizzas">
-          <p>Selected Pizzas:</p>
+      <div className={styles.orderSummaryContent}>
+        <div className={styles.selectedItems}>
+          <p>Items:</p>
           {pizzas.length > 0 ? (
             <ul>
               {pizzas.map((pizza) => (
                 <li key={pizza.id}>
-                  Toppings: {pizza.toppings.join(", ")}, Price:{" "}
-                  {pizza.price ? `$${pizza.price.toFixed(2)}` : "N/A"}
-                  <button onClick={() => handleRemovePizza(pizza.id)}>
-                    Delete
-                  </button>
+                  <div className={styles.orderItem}>
+                    <div className={styles.itemName}>
+                      Toppings: {pizza.toppings.join(", ")}
+                    </div>
+                    <div className={styles.itemDetails}>
+                      <div className={styles.price}>
+                        {pizza.price ? `$${pizza.price.toFixed(2)}` : "N/A"}
+                      </div>
+                      <div
+                        className={styles.deleteIcon}
+                        onClick={() => handleRemovePizza(pizza.id)}
+                      >
+                        <FaTrash />
+                      </div>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
           ) : (
             <p>No pizzas in the order</p>
           )}
-        </div>
-        <div className="selected-drinks">
-          <p>Selected Drinks:</p>
           {drinks.length > 0 ? (
             <ul>
               {drinks.map((drink) => (
                 <li key={drink.id}>
-                  Drink: {drink.name}, Price: ${drink.price.toFixed(2)}
-                  <button onClick={() => handleRemoveDrink(drink.id)}>
-                    Delete
-                  </button>
+                  <div className={styles.orderItem}>
+                    <div className={styles.itemName}>{drink.name}</div>
+                    <div className={styles.itemDetails}>
+                      <div className={styles.price}>
+                        ${drink.price.toFixed(2)}
+                      </div>
+                      <div
+                        className={styles.deleteIcon}
+                        onClick={() => handleRemoveDrink(drink.id)}
+                      >
+                        <FaTrash />
+                      </div>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -108,7 +142,15 @@ const OrderSummary = () => {
           )}
         </div>
       </div>
-      <button onClick={handleSubmitOrder} disabled={pizzas.length === 0}>
+      <div className={styles.subtotal}>
+        <span>Subtotal:</span>
+        <span>${subtotal.toFixed(2)}</span>
+      </div>
+      <button
+        className={styles.submitButton}
+        onClick={handleSubmitOrder}
+        disabled={pizzas.length === 0}
+      >
         Submit Order
       </button>
     </div>

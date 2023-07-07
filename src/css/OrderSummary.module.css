@@ -1,0 +1,80 @@
+.orderSummaryContainer {
+  background-color: #1f1d2b;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.orderItemsContainer {
+  margin-top: 20px;
+}
+
+.orderItemsHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ffffff;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ffffff;
+}
+
+.itemColumn {
+  flex: 2;
+}
+
+.priceColumn {
+  flex: 1;
+  text-align: right;
+}
+
+.deleteColumn {
+  flex: 0.5;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.itemName {
+  flex: 1;
+  word-wrap: break-word;
+}
+
+.itemDetails {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.qty,
+.price {
+  text-align: right;
+}
+
+.deleteIcon {
+  color: #ffffff;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.submitButton {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #ea7c69;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

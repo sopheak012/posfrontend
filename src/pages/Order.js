@@ -2,19 +2,20 @@ import React from "react";
 import CreatePizza from "../components/CreatePizza";
 import CreateDrink from "../components/CreateDrink";
 import OrderSummary from "../components/OrderSummary";
+import styles from "../css/Order.module.css";
 
 const Order = () => {
   return (
-    <div className="order-container">
+    <div className={styles.orderContainer}>
       <h1>Order Page</h1>
-      <div className="order-content">
-        <div className="create-pizza">
+      <div className={styles.orderContent}>
+        <div className={styles.createPizza}>
           <CreatePizza />
         </div>
-        <div className="create-drink">
+        <div className={styles.createDrink}>
           <CreateDrink />
         </div>
-        <div className="order-summary">
+        <div className={styles.orderSummary}>
           <OrderSummary />
         </div>
       </div>

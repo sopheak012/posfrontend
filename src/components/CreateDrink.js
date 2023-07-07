@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addDrink } from "../features/drinkSlice";
+import styles from "../css/CreateDrink.module.css";
 
 const CreateDrink = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const CreateDrink = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Create Drink</h2>
 
       <h3>Popular Canned Drinks</h3>

@@ -1,0 +1,52 @@
+.dashboardContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.orderList {
+  list-style: none;
+  padding: 0;
+}
+
+.orderItem {
+  background-color: #1f1d2b;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.orderId {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.pizzas,
+.drinks {
+  margin-bottom: 10px;
+}
+
+.pizzas > div,
+.drinks > div {
+  font-weight: bold;
+}
+
+.pizzaItem,
+.drinkItem {
+  margin-left: 20px;
+}
+
+.pizzaItem::before {
+  content: "•";
+  margin-right: 5px;
+}
+
+.drinkItem::before {
+  content: "•";
+  margin-right: 5px;
+}

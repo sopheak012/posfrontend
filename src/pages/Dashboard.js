@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { socket } from "../socket/SocketConnection";
 import axios from "axios";
+import styles from "../css/DashBoard.module.css";
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -53,54 +54,33 @@ const Dashboard = () => {
     .slice(0, 10);
 
   return (
-    <div>
+    <div className={styles.dashboardContainer}>
       <h2>Order List</h2>
       {sortedOrders.length > 0 ? (
-        <ul>
+        <ul className={styles.orderList}>
           {sortedOrders.map((order) => (
-            <li key={order._id}>
-              <div>Order ID: {order.orderNum}</div>
-              <div>Pizzas:</div>
-              <ul>
-                {order.pizzas
-                  .reduce((acc, pizza) => {
-                    const toppings = JSON.stringify(pizza.toppings);
-                    const existingPizzaIndex = acc.findIndex(
-                      (item) => JSON.stringify(item.toppings) === toppings
-                    );
-                    if (existingPizzaIndex !== -1) {
-                      acc[existingPizzaIndex].quantity++;
-                    } else {
-                      acc.push({ toppings: pizza.toppings, quantity: 1 });
-                    }
-                    return acc;
-                  }, [])
-                  .map((pizza) => (
-                    <li key={JSON.stringify(pizza.toppings)}>
-                      {pizza.quantity}x {pizza.toppings.join(", ")}
+            <li key={order._id} className={styles.orderItem}>
+              <div className={styles.orderId}>Order ID: {order.orderNum}</div>
+              <div className={styles.pizzas}>
+                <div>Pizzas:</div>
+                <ul>
+                  {order.pizzas.map((pizza, index) => (
+                    <li key={index} className={styles.pizzaItem}>
+                      {pizza.toppings.join(", ")}
                     </li>
                   ))}
-              </ul>
-              <div>Drinks:</div>
-              <ul>
-                {order.drinks
-                  .reduce((acc, drink) => {
-                    const existingDrinkIndex = acc.findIndex(
-                      (item) => item.drink === drink.drink
-                    );
-                    if (existingDrinkIndex !== -1) {
-                      acc[existingDrinkIndex].quantity++;
-                    } else {
-                      acc.push({ drink: drink.drink, quantity: 1 });
-                    }
-                    return acc;
-                  }, [])
-                  .map((drink) => (
-                    <li key={drink.drink}>
-                      {drink.quantity}x {drink.drink}
+                </ul>
+              </div>
+              <div className={styles.drinks}>
+                <div>Drinks:</div>
+                <ul>
+                  {order.drinks.map((drink, index) => (
+                    <li key={index} className={styles.drinkItem}>
+                      {drink.drink}
                     </li>
                   ))}
-              </ul>
+                </ul>
+              </div>
             </li>
           ))}
         </ul>
