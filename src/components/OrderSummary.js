@@ -96,7 +96,7 @@ const OrderSummary = () => {
                 <li key={pizza.id}>
                   <div className={styles.orderItem}>
                     <div className={styles.itemName}>
-                      Toppings: {pizza.toppings.join(", ")}
+                      {pizza.toppings.join(", ")}
                     </div>
                     <div className={styles.itemDetails}>
                       <div className={styles.price}>

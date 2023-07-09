@@ -53,6 +53,14 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 10);
 
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours() % 12 || 12;
+    const minutes = date.getMinutes();
+    const period = date.getHours() >= 12 ? "PM" : "AM";
+    return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
+  };
+
   return (
     <div className={styles.dashboardContainer}>
       <h2>Order List</h2>
@@ -61,24 +69,52 @@ const Dashboard = () => {
           {sortedOrders.map((order) => (
             <li key={order._id} className={styles.orderItem}>
               <div className={styles.orderId}>Order ID: {order.orderNum}</div>
+              <div className={styles.orderTime}>
+                Placed at: {formatTime(order.createdAt)}
+              </div>
               <div className={styles.pizzas}>
                 <div>Pizzas:</div>
                 <ul>
-                  {order.pizzas.map((pizza, index) => (
-                    <li key={index} className={styles.pizzaItem}>
-                      {pizza.toppings.join(", ")}
-                    </li>
-                  ))}
+                  {order.pizzas
+                    .reduce((acc, pizza) => {
+                      const existingPizza = acc.find(
+                        (item) =>
+                          item.toppings.join(", ") === pizza.toppings.join(", ")
+                      );
+                      if (existingPizza) {
+                        existingPizza.quantity += 1;
+                      } else {
+                        acc.push({ ...pizza, quantity: 1 });
+                      }
+                      return acc;
+                    }, [])
+                    .map((pizza, index) => (
+                      <li key={index} className={styles.pizzaItem}>
+                        {pizza.toppings.join(", ")} x{pizza.quantity}
+                      </li>
+                    ))}
                 </ul>
               </div>
               <div className={styles.drinks}>
                 <div>Drinks:</div>
                 <ul>
-                  {order.drinks.map((drink, index) => (
-                    <li key={index} className={styles.drinkItem}>
-                      {drink.drink}
-                    </li>
-                  ))}
+                  {order.drinks
+                    .reduce((acc, drink) => {
+                      const existingDrink = acc.find(
+                        (item) => item.drink === drink.drink
+                      );
+                      if (existingDrink) {
+                        existingDrink.quantity += 1;
+                      } else {
+                        acc.push({ ...drink, quantity: 1 });
+                      }
+                      return acc;
+                    }, [])
+                    .map((drink, index) => (
+                      <li key={index} className={styles.drinkItem}>
+                        {drink.drink} x{drink.quantity}
+                      </li>
+                    ))}
                 </ul>
               </div>
             </li>

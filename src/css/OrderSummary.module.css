@@ -1,67 +1,66 @@
 .orderSummaryContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
   background-color: #1f1d2b;
   color: #ffffff;
   padding: 20px;
+  width: 300px; /* Adjust the width as needed */
+  height: 100vh; /* Set the height to cover the entire viewport */
+  overflow-y: auto; /* Add scroll when content exceeds the available height */
 }
 
-.orderItemsContainer {
+.orderSummaryContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectedItems {
   margin-top: 20px;
 }
 
-.orderItemsHeader {
-  display: flex;
-  align-items: center;
+.selectedItems p {
   font-weight: bold;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ffffff;
 }
 
 .orderItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ffffff;
-}
-
-.itemColumn {
-  flex: 2;
-}
-
-.priceColumn {
-  flex: 1;
-  text-align: right;
-}
-
-.deleteColumn {
-  flex: 0.5;
-}
-
-.item {
-  display: flex;
-  align-items: center;
+  margin-bottom: 10px;
 }
 
 .itemName {
-  flex: 1;
+  flex: 2;
   word-wrap: break-word;
 }
 
 .itemDetails {
   display: flex;
   align-items: center;
-  margin-left: 10px;
 }
 
-.qty,
 .price {
+  flex: 1;
   text-align: right;
 }
 
 .deleteIcon {
   color: #ffffff;
   cursor: pointer;
-  padding: 5px;
+  margin-left: 10px;
+}
+
+.subtotal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.subtotal span:first-child {
+  margin-right: 10px;
 }
 
 .submitButton {
